@@ -55,6 +55,36 @@ Everything is local: one JSON file, no account and no network sync.
 - **Persistence:** an atomic write to a single JSON document, guarded by a PID
   lock beside the file.
 
+## Install
+
+From GitHub Releases (prebuilt binary, one-liner):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/gbsaito/tasker/main/install.sh | sh
+```
+
+Pin a version:
+
+```sh
+TASKER_VERSION=v2.0.0 curl -fsSL https://raw.githubusercontent.com/gbsaito/tasker/v2.0.0/install.sh | sh
+```
+
+Options: `--version <v>`, `--no-modify-path`, `-v` / `-q` / `-h` (see
+`install.sh --help`).
+
+Manual install: download the archive for your platform from
+<https://github.com/gbsaito/tasker/releases>, unpack it, and put the binary on
+your PATH.
+
+From source:
+
+```sh
+git clone https://github.com/gbsaito/tasker.git
+cd tasker
+bun install
+bun run build                     # ./tasker
+```
+
 ## Run
 
 ```sh

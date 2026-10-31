@@ -12,6 +12,8 @@ React. Same JSON document shape, quick-add grammar and key bindings as tasker v1
 ## Features
 - Views: Inbox, Today, Upcoming, plus one per project, label and tag namespace.
 - Manager for projects/sections/labels; quick-add grammar; undo/redo; notes/URLs.
+- Install: `install.sh` + prebuilt binaries via GitHub Releases
+  (`tasker-v<version>-<triple>.tar.gz`), one-liner `curl … | sh`.
 
 ## User Decisions
 - OpenTUI rewrite adopted per user request (2026-10-29).
