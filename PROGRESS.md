@@ -1,6 +1,13 @@
 # PROGRESS.md — tasker (OpenTUI rewrite)
 
 ## Done
+- Added GitHub Releases installer script (`install.sh`) in abtop style: one-liner
+  `curl -fsSL https://raw.githubusercontent.com/gbsaito/tasker/main/install.sh | sh`,
+  version pin via `TASKER_VERSION=vX.Y.Z`, platform detect (linux/darwin x86_64/aarch64),
+  download `tasker-v<ver>-<triple>.tar.gz` + `checksums.txt` sha256 verify, install to
+  `~/.local/bin`, PATH via `~/.tasker-install/env.sh`. README + PLAN updated. Release
+  workflow added (`.github/workflows/release.yml`) to build via `bun run build` and publish
+  tarballs + checksums on `v*` tag (2026-10-31).
 - Changed the default data path from `$XDG_DATA_HOME`/`~/.local/share` to
   `$XDG_CONFIG_HOME`/`~/.config`, matching the location the user asked for and
   where the real workspace already lives (2026-10-31). `defaultPath()` in

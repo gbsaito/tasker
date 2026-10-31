@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.triple }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            triple: x86_64-unknown-linux-gnu
+          - os: ubuntu-24.04-arm
+            triple: aarch64-unknown-linux-gnu
+          - os: macos-latest
+            triple: aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - name: Package
+        run: |
+          VER="${GITHUB_REF_NAME#v}"
+          ASSET="tasker-v${VER}-${{ matrix.triple }}.tar.gz"
+          tar czf "${ASSET}" tasker
+          sha256sum "${ASSET}" > "${ASSET}.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tasker-v${{ matrix.triple }}
+          path: |
+            tasker-v*.tar.gz
+            tasker-v*.tar.gz.sha256
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Generate checksums.txt
+        run: sha256sum dist/tasker-v*.tar.gz > dist/checksums.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: tasker ${{ github.ref_name }}
+          files: |
+            dist/tasker-v*.tar.gz
+            dist/checksums.txt
+          generate_release_notes: true
