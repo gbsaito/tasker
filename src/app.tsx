@@ -3,7 +3,7 @@
 // opaque chrome row above and below), while the rendering itself is OpenTUI.
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import type { InputRenderable, KeyEvent, ScrollBoxRenderable } from "@opentui/core"
+import type { InputRenderable, KeyEvent, MouseEvent, ScrollBoxRenderable } from "@opentui/core"
 import { useKeyboard, useRenderer, useTerminalDimensions } from "@opentui/react"
 
 import { Header, Footer } from "./components/chrome"
@@ -23,6 +23,7 @@ import {
 } from "./components/modals"
 import { Sidebar } from "./components/sidebar"
 import { TaskList } from "./components/tasklist"
+import { scrollDelta } from "./mouse"
 import { isoOf, todayIso, humanDate } from "./dates"
 import { PALETTE, type Priority, type Project, type Section, type Tag, type Task, parsePriority, priorityName } from "./model"
 import { parseDate, quickAdd } from "./parse"
@@ -355,6 +356,22 @@ export function App({ store }: { store: Store }) {
   function navigate(delta: number): void {
     setRawNavIndex(moveNavIndex(nav, navIndex, delta))
     setCursor(0)
+  }
+
+  // ---- mouse scroll -----------------------------------------------------
+
+  const handleSidebarScroll = (event: MouseEvent) => {
+    if (mode !== "normal") return
+    if (focus !== "sidebar") return
+    const delta = scrollDelta(event)
+    if (delta !== 0) navigate(delta)
+  }
+
+  const handleListScroll = (event: MouseEvent) => {
+    if (mode !== "normal") return
+    if (focus !== "list") return
+    const delta = scrollDelta(event)
+    if (delta !== 0) setCursor(nextTaskIndex(rows, cursorIndex, delta))
   }
 
   function openSelectedLink(): void {
@@ -1610,6 +1627,7 @@ export function App({ store }: { store: Store }) {
             focused={focus === "sidebar"}
             theme={theme}
             scrollRef={sidebarScrollRef}
+            onMouseScroll={handleSidebarScroll}
             onSelect={(index) => {
               setRawNavIndex(index)
               setFocus("sidebar")
@@ -1627,6 +1645,7 @@ export function App({ store }: { store: Store }) {
           title={navPath(currentNav)}
           width={listWidth}
           scrollRef={listScrollRef}
+          onMouseScroll={handleListScroll}
           onSelect={(index) => {
             setCursor(index)
             setFocus("list")

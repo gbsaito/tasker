@@ -1,5 +1,5 @@
 import type { RefObject } from "react"
-import type { ScrollBoxRenderable } from "@opentui/core"
+import type { MouseEvent, ScrollBoxRenderable } from "@opentui/core"
 import type { NavItem } from "../rows"
 import type { Theme } from "../theme"
 import { GLYPHS } from "../theme"
@@ -29,6 +29,7 @@ export function Sidebar({
   theme,
   onSelect,
   scrollRef,
+  onMouseScroll,
 }: {
   nav: NavItem[]
   navIndex: number
@@ -36,6 +37,7 @@ export function Sidebar({
   theme: Theme
   onSelect: (index: number) => void
   scrollRef: RefObject<ScrollBoxRenderable | null>
+  onMouseScroll?: (event: MouseEvent) => void
 }) {
   return (
     <box
@@ -47,6 +49,7 @@ export function Sidebar({
       borderColor={theme.border}
       paddingLeft={1}
       paddingRight={1}
+      onMouseScroll={onMouseScroll}
     >
       <PaneTitle title="Navigation" focused={focused} theme={theme} trailing={focused ? "active" : ""} />
       <scrollbox

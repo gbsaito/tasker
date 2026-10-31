@@ -1,5 +1,5 @@
 import type { RefObject } from "react"
-import { TextAttributes, type ScrollBoxRenderable } from "@opentui/core"
+import { TextAttributes, type MouseEvent, type ScrollBoxRenderable } from "@opentui/core"
 import { shortDate } from "../dates"
 import { type Task, priorityColor } from "../model"
 import type { ListRow } from "../rows"
@@ -154,6 +154,7 @@ export function TaskList({
   width,
   onSelect,
   scrollRef,
+  onMouseScroll,
 }: {
   rows: ListRow[]
   cursor: number
@@ -165,6 +166,7 @@ export function TaskList({
   width: number
   onSelect: (index: number) => void
   scrollRef: RefObject<ScrollBoxRenderable | null>
+  onMouseScroll?: (event: MouseEvent) => void
 }) {
   const taskCount = rows.filter((row) => !!row.task).length
   return (
@@ -175,6 +177,7 @@ export function TaskList({
       backgroundColor={theme.base}
       paddingLeft={1}
       paddingRight={1}
+      onMouseScroll={onMouseScroll}
     >
       <PaneTitle
         title={title}
