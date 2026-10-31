@@ -50,7 +50,8 @@ jobs:
           path: dist
           merge-multiple: true
       - name: Generate checksums.txt
-        run: sha256sum dist/tasker-v*.tar.gz > dist/checksums.txt
+        working-directory: dist
+        run: sha256sum tasker-v*.tar.gz > checksums.txt
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}

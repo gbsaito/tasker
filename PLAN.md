@@ -14,6 +14,7 @@ React. Same JSON document shape, quick-add grammar and key bindings as tasker v1
 - Manager for projects/sections/labels; quick-add grammar; undo/redo; notes/URLs.
 - Install: `install.sh` + prebuilt binaries via GitHub Releases
   (`tasker-v<version>-<triple>.tar.gz`), one-liner `curl … | sh`.
+- Uninstall: `uninstall.sh` removes the binary and PATH line, keeps task data.
 
 ## User Decisions
 - OpenTUI rewrite adopted per user request (2026-10-29).

@@ -85,6 +85,15 @@ bun install
 bun run build                     # ./tasker
 ```
 
+## Uninstall
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/gbsaito/tasker/main/uninstall.sh | sh
+```
+
+Removes the `tasker` binary and the PATH line added by the installer. Task data
+is kept at `~/.config/tasker/tasker.json` (or `$XDG_CONFIG_HOME/tasker/tasker.json`).
+
 ## Run
 
 ```sh

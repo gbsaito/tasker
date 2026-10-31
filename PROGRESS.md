@@ -1,6 +1,14 @@
 # PROGRESS.md — tasker (OpenTUI rewrite)
 
 ## Done
+- Added `uninstall.sh` (`curl -fsSL .../uninstall.sh | sh`): removes
+  `~/.local/bin/tasker`, `~/.tasker-install/env.sh` and the sourced PATH line from
+  the shell rc files, leaving task data untouched. Verified against a fake HOME
+  (install twice -> no duplicate rc line; uninstall -> binary, env dir and rc line
+  gone, rc content preserved).
+- Hardened `install.sh`: checksum lookup now strips directory prefixes from
+  `checksums.txt` entries and fails when the asset is missing from it; PATH env
+  file is regenerated on reinstall and the rc line is only added once (2026-10-31).
 - Added GitHub Releases installer script (`install.sh`) in abtop style: one-liner
   `curl -fsSL https://raw.githubusercontent.com/gbsaito/tasker/main/install.sh | sh`,
   version pin via `TASKER_VERSION=vX.Y.Z`, platform detect (linux/darwin x86_64/aarch64),
